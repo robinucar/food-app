@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import './App.css'
 import Axios from 'axios'
+import Recipe from './Components/Recipe'
+import { v4 as uuidv4 } from 'uuid';
 
 const App = () => {
   const [query, setQuery] = useState('');
+
+  const [recipes, setRecipes] = useState([]);
 
   const APP_ID = '34acae91';
 
@@ -13,6 +17,7 @@ const App = () => {
 
   const getData = async () => {
     const result = await Axios.get(url)
+    setRecipes(result.data.hits)
 
     console.log(result)
 
@@ -45,6 +50,12 @@ const App = () => {
         <input type = 'submit' value = 'search' />
 
       </form>
+      <div className = 'recipes'>
+
+        {recipes !== [] && recipes.map(recipe =>
+          <Recipe key = {uuidv4()} recipe = {recipe}/>)}
+
+      </div>
     </div>
   )
 }
